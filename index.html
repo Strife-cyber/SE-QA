@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application d'apprentissage</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Add syntax highlighting library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+</head>
+<body>
+    <header>
+        <h1>Application d'apprentissage</h1>
+        <div class="subject-selector">
+            <label for="subject-select">Sujet d'étude:</label>
+            <select id="subject-select"></select>
+            <button id="add-subject-btn" class="btn secondary small">
+                <i class="fas fa-plus"></i> Ajouter un sujet
+            </button>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+                <span class="progress-text" id="progress-percent">0%</span>
+            </div>
+        </div>
+        <div class="import-container">
+            <button id="import-data-btn" class="btn secondary">
+                <i class="fas fa-file-import"></i> Importer des données
+            </button>
+            <input type="file" id="import-file" accept=".json" style="display: none;">
+            <button id="export-data-btn" class="btn secondary">
+                <i class="fas fa-file-export"></i> Exporter
+            </button>
+        </div>
+        <ul class="nav-tabs">
+            <li class="tab active" data-tab="quiz">Quiz</li>
+            <li class="tab" data-tab="flashcards">Cartes mémoire</li>
+            <li class="tab" data-tab="progress">Progression</li>
+            <li class="tab" data-tab="manage">Gérer le contenu</li>
+        </ul>
+    </header>
+
+    <main>
+        <section id="quiz" class="tab-content active">
+            <div class="quiz-controls">
+                <div class="quiz-topic">
+                    <label for="topic-select">Sujet:</label>
+                    <select id="topic-select">
+                        <option value="all">Tous</option>
+                    </select>
+                    <button id="add-topic-btn" class="btn secondary small">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="quiz-type">
+                    <label for="question-type">Type de question:</label>
+                    <select id="question-type">
+                        <option value="all">Tous les types</option>
+                        <option value="multiple-choice">Choix multiple</option>
+                        <option value="true-false">Vrai/Faux</option>
+                        <option value="short-answer">Réponse courte</option>
+                    </select>
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="question-number">
+                    Question <span id="current-question">1</span> sur <span id="total-questions">10</span>
+                </div>
+                <div class="question-text" id="question-text">
+                    <!-- Question text will be dynamically added here -->
+                </div>
+                <div class="options-container" id="options-container">
+                    <!-- Options will be dynamically added here -->
+                </div>
+                <div class="short-answer-container" id="short-answer-container">
+                    <textarea id="short-answer" placeholder="Entrez votre réponse..."></textarea>
+                </div>
+                <div class="question-buttons">
+                    <button id="check-answer" class="btn primary">Vérifier la réponse</button>
+                    <button id="next-question" class="btn secondary" disabled>Question suivante</button>
+                </div>
+                <div class="feedback" id="feedback">
+                    <!-- Feedback will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+
+        <section id="flashcards" class="tab-content">
+            <div class="flashcard-controls">
+                <div class="flashcard-topic">
+                    <label for="flashcard-topic-select">Sujet:</label>
+                    <select id="flashcard-topic-select">
+                        <option value="all">Tous</option>
+                    </select>
+                    <button id="add-flashcard-topic-btn" class="btn secondary small">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="flashcard-navigation">
+                    <button id="prev-flashcard" class="btn secondary">
+                        <i class="fas fa-chevron-left"></i> Précédent
+                    </button>
+                    <span id="flashcard-counter">1 / 10</span>
+                    <button id="next-flashcard" class="btn secondary">
+                        Suivant <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flashcard-container">
+                <div class="flashcard" id="current-flashcard">
+                    <div class="flashcard-front">
+                        <div class="flashcard-text" id="flashcard-front-text">
+                            <!-- Flashcard front text will be dynamically added here -->
+                        </div>
+                        <div class="flashcard-hint">Cliquez pour retourner</div>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="flashcard-text" id="flashcard-back-text">
+                            <!-- Flashcard back text will be dynamically added here -->
+                        </div>
+                        <div class="flashcard-hint">Cliquez pour retourner</div>
+                    </div>
+                </div>
+                <div class="flashcard-buttons">
+                    <button id="mark-known" class="btn success">Je connais</button>
+                    <button id="mark-review" class="btn warning">À revoir</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="progress" class="tab-content">
+            <div class="stats-container">
+                <div class="stats-card">
+                    <h3>Résumé</h3>
+                    <div class="chart-container" id="performance-chart">
+                        <!-- Chart will be dynamically added here -->
+                    </div>
+                    <div class="stats-summary">
+                        <div class="stat-item">
+                            <div class="stat-label">Questions répondues</div>
+                            <div class="stat-value" id="total-answered">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Réponses correctes</div>
+                            <div class="stat-value" id="total-correct">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Précision</div>
+                            <div class="stat-value" id="accuracy">0%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <h3>Progression par thème</h3>
+                    <div class="topic-stats" id="topic-stats">
+                        <!-- Topic stats will be dynamically added here -->
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <h3>Historique des sessions</h3>
+                    <div class="session-history">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Questions</th>
+                                    <th>Correctes</th>
+                                    <th>Précision</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <!-- History will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="manage" class="tab-content">
+            <div class="manage-container">
+                <div class="manage-card">
+                    <h3>Ajouter du contenu</h3>
+                    <div class="content-type-selector">
+                        <button class="content-type-btn active" data-type="question">Questions</button>
+                        <button class="content-type-btn" data-type="flashcard">Cartes mémoire</button>
+                    </div>
+                    
+                    <div id="add-question-form" class="content-form">
+                        <div class="form-group">
+                            <label for="question-type-select">Type de question:</label>
+                            <select id="question-type-select">
+                                <option value="multiple-choice">Choix multiple</option>
+                                <option value="true-false">Vrai/Faux</option>
+                                <option value="short-answer">Réponse courte</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="question-topic-select">Thème:</label>
+                            <select id="question-topic-select"></select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="question-text-input">Question:</label>
+                            <textarea id="question-text-input" placeholder="Entrez votre question ici..."></textarea>
+                        </div>
+                        
+                        <div id="options-input-container" class="form-group">
+                            <label>Options:</label>
+                            <div id="options-list">
+                                <div class="option-input">
+                                    <input type="text" placeholder="Option 1">
+                                    <button class="remove-option-btn"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="option-input">
+                                    <input type="text" placeholder="Option 2">
+                                    <button class="remove-option-btn"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <button id="add-option-btn" class="btn secondary small">Ajouter une option</button>
+                        </div>
+                        
+                        <div id="correct-answer-container" class="form-group">
+                            <label for="correct-answer-select">Réponse correcte:</label>
+                            <select id="correct-answer-select"></select>
+                        </div>
+                        
+                        <div id="keywords-container" class="form-group" style="display: none;">
+                            <label for="keywords-input">Mots-clés (séparés par des virgules):</label>
+                            <input type="text" id="keywords-input" placeholder="mot1, mot2, mot3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="explanation-input">Explication:</label>
+                            <textarea id="explanation-input" placeholder="Explication de la réponse..."></textarea>
+                        </div>
+                        
+                        <button id="save-question-btn" class="btn primary">Enregistrer la question</button>
+                    </div>
+                    
+                    <div id="add-flashcard-form" class="content-form" style="display: none;">
+                        <div class="form-group">
+                            <label for="flashcard-topic-input">Thème:</label>
+                            <select id="flashcard-topic-input"></select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="flashcard-front-input">Recto:</label>
+                            <textarea id="flashcard-front-input" placeholder="Texte du recto de la carte..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="flashcard-back-input">Verso:</label>
+                            <textarea id="flashcard-back-input" placeholder="Texte du verso de la carte..."></textarea>
+                        </div>
+                        
+                        <button id="save-flashcard-btn" class="btn primary">Enregistrer la carte</button>
+                    </div>
+                </div>
+                
+                <div class="manage-card">
+                    <h3>Contenu existant</h3>
+                    <div class="content-filter">
+                        <select id="filter-content-type">
+                            <option value="questions">Questions</option>
+                            <option value="flashcards">Cartes mémoire</option>
+                        </select>
+                        <select id="filter-content-topic"></select>
+                        <input type="text" id="content-search" placeholder="Rechercher...">
+                    </div>
+                    
+                    <div class="content-list" id="content-list">
+                        <!-- Content items will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="subject-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Ajouter un nouveau sujet</h2>
+            <div class="form-group">
+                <label for="new-subject-name">Nom du sujet:</label>
+                <input type="text" id="new-subject-name" placeholder="Ex: Mathématiques">
+            </div>
+            <div class="form-group">
+                <label for="new-subject-description">Description (optionnel):</label>
+                <textarea id="new-subject-description" placeholder="Description du sujet..."></textarea>
+            </div>
+            <button id="save-subject-btn" class="btn primary">Enregistrer</button>
+        </div>
+    </div>
+
+    <div id="topic-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Ajouter un nouveau thème</h2>
+            <div class="form-group">
+                <label for="new-topic-name">Nom du thème:</label>
+                <input type="text" id="new-topic-name" placeholder="Ex: Algèbre">
+            </div>
+            <div class="form-group">
+                <label for="new-topic-description">Description (optionnel):</label>
+                <textarea id="new-topic-description" placeholder="Description du thème..."></textarea>
+            </div>
+            <button id="save-topic-btn" class="btn primary">Enregistrer</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script src="theme-switch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Add this after the DOM is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Add pratique option to question type select if it doesn't exist
+            const questionTypeSelect = document.getElementById("question-type");
+            if (questionTypeSelect) {
+                let pratiqueOption = Array.from(questionTypeSelect.options).find(option => option.value === "pratique");
+                if (!pratiqueOption) {
+                    const option = document.createElement("option");
+                    option.value = "pratique";
+                    option.textContent = "Pratique";
+                    questionTypeSelect.appendChild(option);
+                }
+            }
+            
+            // Add pratique option to question type select in the management section
+            const questionTypeSelectManagement = document.getElementById("question-type-select");
+            if (questionTypeSelectManagement) {
+                let pratiqueOption = Array.from(questionTypeSelectManagement.options).find(option => option.value === "pratique");
+                if (!pratiqueOption) {
+                    const option = document.createElement("option");
+                    option.value = "pratique";
+                    option.textContent = "Pratique";
+                    questionTypeSelectManagement.appendChild(option);
+                }
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize syntax highlighting
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+            
+            // Add observer to highlight code blocks that are dynamically added
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.addedNodes.length) {
+                        mutation.addedNodes.forEach((node) => {
+                            if (node.nodeType === 1) { // ELEMENT_NODE
+                                const codeBlocks = node.querySelectorAll('pre code');
+                                if (codeBlocks.length) {
+                                    codeBlocks.forEach((block) => {
+                                        hljs.highlightBlock(block);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+    </script>
+</body>
+</html>
