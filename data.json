@@ -5598,6 +5598,1462 @@
             }
         ]
     },
+    "memory": {
+        "name": "Operating Systems (ECS 150) - Memory Management",
+        "description": "Exploration approfondie des techniques de gestion de la mémoire dans les systèmes d'exploitation",
+        "topics": {
+            "introduction": { "name": "Introduction à la Gestion de la Mémoire" },
+            "no_management": { "name": "Aucune Gestion" },
+            "resident_monitor": { "name": "Moniteur Résident" },
+            "swapping": { "name": "Permutation (Swapping)" },
+            "partitions": { "name": "Partitions" },
+            "paging": { "name": "Pagination" },
+            "segmentation": { "name": "Segmentation" },
+            "combined_systems": { "name": "Systèmes Combinés" },
+            "memory_allocation": { "name": "Allocation de Mémoire" },
+            "protection_sharing": { "name": "Protection et Partage" }
+        },
+        "quizData": {
+            "multiple-choice": [
+                {
+                    "id": 1,
+                    "topic": "introduction",
+                    "question": "Dans un système multi-tâches, quelle est la principale raison de partager la ressource mémoire entre les processus ?",
+                    "options": [
+                        "Pour augmenter la vitesse du processeur",
+                        "Pour permettre l'exécution simultanée de plusieurs programmes",
+                        "Pour réduire la taille des programmes",
+                        "Pour simplifier la conception du matériel"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Dans un système multi-tâches, la mémoire est partagée pour permettre l'exécution simultanée de plusieurs programmes, maximisant l'utilisation des ressources. Cela contraste avec l'augmentation de la vitesse du processeur (qui dépend du matériel) ou la réduction de la taille des programmes (qui n'est pas l'objectif principal)."
+                },
+                {
+                    "id": 2,
+                    "topic": "no_management",
+                    "question": "Quel est un inconvénient majeur lorsque l'usager contrôle entièrement la mémoire sans gestion par le système d'exploitation ?",
+                    "options": [
+                        "Protection accrue des données",
+                        "Risque de corruption de mémoire par d'autres processus",
+                        "Allocation automatique de mémoire",
+                        "Performance optimale pour tous les programmes"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Sans gestion de mémoire par le système d'exploitation (OS), il n'y a pas de mécanisme pour empêcher un processus d'écraser la mémoire d'un autre, ce qui entraîne un risque de corruption. Les autres options, comme la protection accrue ou l'allocation automatique, nécessitent une intervention de l'OS."
+                },
+                {
+                    "id": 3,
+                    "topic": "resident_monitor",
+                    "question": "Pourquoi le moniteur résident est-il placé dans une partie spécifique de la mémoire (haut ou bas) ?",
+                    "options": [
+                        "Pour réduire la latence du processeur",
+                        "Pour protéger le système contre les accès non autorisés",
+                        "Pour augmenter la taille de la mémoire utilisateur",
+                        "Pour simplifier la compilation des programmes"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le moniteur résident est placé dans une partie dédiée (haut ou bas) pour protéger le système contre les accès non autorisés par les programmes utilisateurs, en utilisant des mécanismes comme la frontière. Cela n'affecte pas directement la latence du processeur ou la compilation."
+                },
+                {
+                    "id": 4,
+                    "topic": "resident_monitor",
+                    "question": "Si un programme tente d'accéder à une adresse inférieure à la frontière dans un système avec moniteur résident, que se passe-t-il ?",
+                    "options": [
+                        "L'accès est autorisé sans restriction",
+                        "Une erreur est générée",
+                        "Le programme est relocalisé",
+                        "La frontière est ajustée dynamiquement"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Dans un système avec moniteur résident, une tentative d'accès à une adresse inférieure à la frontière (réservée au moniteur) déclenche une erreur, car cela viole la protection matérielle. La relocalisation ou l'ajustement de la frontière ne se produit pas automatiquement."
+                },
+                {
+                    "id": 5,
+                    "topic": "swapping",
+                    "question": "Quel est l'impact principal d'un changement de contexte dans un système utilisant la permutation (swapping) ?",
+                    "options": [
+                        "Augmentation de la taille de la mémoire physique",
+                        "Temps supplémentaire pour copier la mémoire vers le stockage secondaire",
+                        "Réduction de la fragmentation interne",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La permutation (swapping) implique de copier la mémoire d'un processus vers le stockage secondaire (comme un disque) et de charger un autre processus, ce qui ajoute un temps significatif lors du changement de contexte. Cela n'affecte pas la taille de la mémoire physique ou la fragmentation interne."
+                },
+                {
+                    "id": 6,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes, comment le planificateur de haut niveau choisit-il une partition pour un processus ?",
+                    "options": [
+                        "En fonction de la priorité du processus",
+                        "En fonction des besoins en mémoire du processus",
+                        "En fonction de l'ordre d'arrivée du processus",
+                        "En fonction de la taille du disque dur"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Dans un système à partitions fixes, le planificateur de haut niveau alloue une partition en fonction des besoins en mémoire du processus, pour garantir que la partition est suffisamment grande. La priorité ou l'ordre d'arrivée peut influencer d'autres décisions, mais pas l'allocation initiale."
+                },
+                {
+                    "id": 7,
+                    "topic": "partitions",
+                    "question": "Quelle est la principale différence entre les partitions fixes et variables ?",
+                    "options": [
+                        "Les partitions fixes utilisent la pagination, pas les variables",
+                        "Les partitions fixes ont une taille statique, les variables une taille dynamique",
+                        "Les partitions variables nécessitent un moniteur résident",
+                        "Les partitions fixes éliminent la fragmentation externe"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Les partitions fixes ont une taille prédéfinie et statique, tandis que les partitions variables ajustent leur taille dynamiquement en fonction des besoins des processus. Les partitions fixes n'utilisent pas nécessairement la pagination, et aucune des deux n'élimine complètement la fragmentation externe."
+                },
+                {
+                    "id": 8,
+                    "topic": "paging",
+                    "question": "Dans un système de pagination, si une adresse logique est composée de 12 bits pour le numéro de page et 10 bits pour le déplacement, quelle est la taille maximale de la mémoire logique ?",
+                    "options": [
+                        "4 Mo",
+                        "4 Ko",
+                        "16 Mo",
+                        "16 Ko"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "La mémoire logique est déterminée par le nombre total de bits de l'adresse logique (12 + 10 = 22 bits). Cela donne une taille maximale de (2^{22}) octets = 4 Mo (1 Mo = (2^{20}) octets). Les autres options ne correspondent pas au calcul."
+                },
+                {
+                    "id": 9,
+                    "topic": "paging",
+                    "question": "Pourquoi la taille des pages dans un système de pagination est-elle généralement une puissance de 2 ?",
+                    "options": [
+                        "Pour simplifier l'extraction du numéro de page et du déplacement",
+                        "Pour augmenter la fragmentation interne",
+                        "Pour réduire la taille de la table de pages",
+                        "Pour permettre le partage de segments"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Une taille de page en puissance de 2 (par exemple, 512, 1024) permet une extraction rapide du numéro de page ((L div P)) et du déplacement ((L mod P)) via des opérations binaires (décalage et masquage). Cela n'affecte pas directement la fragmentation ou le partage."
+                },
+                {
+                    "id": 10,
+                    "topic": "segmentation",
+                    "question": "Comment la segmentation facilite-t-elle le partage de code entre processus par rapport à la pagination ?",
+                    "options": [
+                        "En utilisant des adresses logiques fixes",
+                        "En permettant à plusieurs tables de segments de pointer vers le même segment",
+                        "En éliminant la fragmentation interne",
+                        "En réduisant la taille des tables de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La segmentation permet le partage en faisant pointer les tables de segments de différents processus vers un même segment de mémoire (par exemple, un éditeur partagé). La pagination nécessite des mécanismes plus complexes pour partager des pages spécifiques."
+                },
+                {
+                    "id": 11,
+                    "topic": "combined_systems",
+                    "question": "Dans un système de pagination segmentée, pourquoi utilise-t-on une table à deux niveaux ?",
+                    "options": [
+                        "Pour réduire la taille totale de la table de pages",
+                        "Pour augmenter la fragmentation externe",
+                        "Pour simplifier la protection des segments",
+                        "Pour éliminer la nécessité de translation dynamique"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "La pagination segmentée utilise une table à deux niveaux pour réduire la taille de la table de pages, en divisant l'espace d'adressage en segments, chacun ayant sa propre table de pages. Cela ne simplifie pas la protection ni n'élimine la translation dynamique."
+                },
+                {
+                    "id": 12,
+                    "topic": "memory_allocation",
+                    "question": "Dans un système à partitions variables, quel algorithme d'allocation minimise généralement la fragmentation externe à court terme ?",
+                    "options": [
+                        "Best-fit",
+                        "First-fit",
+                        "Worst-fit",
+                        "Random-fit"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "L'algorithme best-fit alloue le bloc de mémoire libre le plus proche de la taille demandée, minimisant la fragmentation externe à court terme. First-fit peut créer des fragments plus rapidement, et worst-fit tend à maximiser les espaces inutilisés."
+                },
+                {
+                    "id": 13,
+                    "topic": "protection_sharing",
+                    "question": "Quel mécanisme matériel est essentiel pour la protection dans un système avec moniteur résident ?",
+                    "options": [
+                        "Registre de translation",
+                        "Registre frontière",
+                        "Tableau de segments",
+                        "Cache mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le registre frontière (boundary register) compare chaque adresse générée par un programme à une limite prédéfinie, empêchant l'accès non autorisé à la mémoire du moniteur. Les autres options ne sont pas directement liées à cette protection."
+                },
+                {
+                    "id": 14,
+                    "topic": "swapping",
+                    "question": "Si un système de permutation alloue 10 ms pour copier 1 Mo de mémoire vers le disque, combien de temps faut-il pour permuter deux processus de 5 Mo chacun ?",
+                    "options": [
+                        "50 ms",
+                        "100 ms",
+                        "200 ms",
+                        "400 ms"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Chaque processus de 5 Mo prend (5 \times 10 = 50 , \text{ms}) pour être copié vers le disque (sortie) et 50 ms pour être chargé (entrée). Pour deux processus (sortie d'un, entrée de l'autre), le temps total est (50 + 50 + 50 + 50 = 200 , \text{ms})."
+                },
+                {
+                    "id": 15,
+                    "topic": "paging",
+                    "question": "Dans un système de pagination avec une table en mémoire associative (TLB), quel est l'effet principal d'un changement de contexte ?",
+                    "options": [
+                        "Mise à jour complète de la table de pages",
+                        "Invalidation ou mise à jour du TLB",
+                        "Réinitialisation de la mémoire physique",
+                        "Augmentation de la taille des pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le TLB (Translation Lookaside Buffer) stocke des traductions d'adresses récentes. Lors d'un changement de contexte, il doit être invalidé ou mis à jour pour refléter la table de pages du nouveau processus, évitant des traductions incorrectes."
+                },
+                {
+                    "id": 16,
+                    "topic": "segmentation",
+                    "question": "Pourquoi la référence indirecte (PIC) est-elle utilisée dans le partage de segments ?",
+                    "options": [
+                        "Pour réduire la taille des segments",
+                        "Pour permettre des références indépendantes de la position des segments",
+                        "Pour éliminer la fragmentation externe",
+                        "Pour simplifier la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le PIC (Position-Independent Code) permet à un segment partagé (comme une bibliothèque) d'être référencé sans dépendre de sa position exacte en mémoire, facilitant le partage entre processus."
+                },
+                {
+                    "id": 17,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes avec trois partitions de 2 Mo, 6 Mo et 12 Mo, quelle partition un processus de 5 Mo utilisera-t-il avec une file par région ?",
+                    "options": [
+                        "2 Mo",
+                        "6 Mo",
+                        "12 Mo",
+                        "Aucune, il sera rejeté"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Avec une file par région, un processus est alloué à la plus petite partition capable de l'accueillir. Un processus de 5 Mo s'insère dans la partition de 6 Mo, mais pas dans celle de 2 Mo. La partition de 12 Mo pourrait être utilisée, mais 6 Mo est la plus adaptée."
+                },
+                {
+                    "id": 18,
+                    "topic": "memory_allocation",
+                    "question": "Quel algorithme d'allocation dans les partitions variables peut créer de très petits blocs inutilisables ?",
+                    "options": [
+                        "First-fit",
+                        "Best-fit",
+                        "Worst-fit",
+                        "Next-fit"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Best-fit choisit le bloc le plus proche de la taille demandée, laissant souvent de petits fragments (par exemple, 2 ou 4 octets) inutilisables. First-fit et worst-fit créent généralement des fragments plus grands."
+                },
+                {
+                    "id": 19,
+                    "topic": "paging",
+                    "question": "Si une page a une taille de 4 Ko et une adresse logique est 12345, quel est le numéro de page ?",
+                    "options": [
+                        "2",
+                        "3",
+                        "4",
+                        "5"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La taille de la page est (4 , text{Ko} = 4096 , text{octets}). Le numéro de page est calculé par (p = L div P = 12345 div 4096 approx 3). (Vérification : (3 \times 4096 = 12288), (12345 - 12288 = 57), donc le numéro de page est 3."
+                },
+                {
+                    "id": 20,
+                    "topic": "combined_systems",
+                    "question": "Pourquoi la segmentation paginée dans Multics divise-t-elle les segments en pages ?",
+                    "options": [
+                        "Pour augmenter la fragmentation externe",
+                        "Pour réduire la taille des tables de segments",
+                        "Pour permettre des segments de taille variable",
+                        "Pour éliminer la nécessité de protection"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Dans Multics, diviser les segments en pages permet de gérer des segments de taille variable tout en utilisant des tables de pages plus petites et en éliminant la fragmentation externe, contrairement à la segmentation pure."
+                },
+                {
+                    "id": 21,
+                    "topic": "protection_sharing",
+                    "question": "Dans un système de segmentation, comment les bits de protection (lecture/écriture/exécution) sont-ils implémentés ?",
+                    "options": [
+                        "Dans la table de pages",
+                        "Dans la table de segments",
+                        "Dans le registre frontière",
+                        "Dans le TLB"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Les bits de protection (lecture/écriture/exécution, notés (r/w/x)) sont stockés dans la table de segments, permettant de définir des autorisations spécifiques pour chaque segment, contrairement à la table de pages ou au TLB."
+                },
+                {
+                    "id": 22,
+                    "topic": "swapping",
+                    "question": "Quel problème survient lorsqu'un processus en attente d'une entrée/sortie (E/S) est permuté ?",
+                    "options": [
+                        "Augmentation de la fragmentation interne",
+                        "Retard dans la complétion de l'E/S",
+                        "Réduction de la taille de la mémoire logique",
+                        "Simplification du changement de contexte"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Si un processus en attente d'une E/S est permuté (copié sur le disque), l'E/S peut être retardée, car le processus n'est plus en mémoire pour recevoir les données. Cela n'affecte pas la fragmentation ou la mémoire logique."
+                },
+                {
+                    "id": 23,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes, quelle est la conséquence d'une partition trop petite pour un processus ?",
+                    "options": [
+                        "Le processus est automatiquement redimensionné",
+                        "Le processus est rejeté ou mis en attente",
+                        "La partition est agrandie dynamiquement",
+                        "La fragmentation externe augmente"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Dans les partitions fixes, si aucune partition n'est assez grande, le processus est rejeté ou mis en attente, car les partitions ne peuvent pas être redimensionnées dynamiquement. La fragmentation externe n'est pas pertinente ici."
+                },
+                {
+                    "id": 24,
+                    "topic": "paging",
+                    "question": "Quel est l'avantage principal de la pagination par rapport aux partitions variables ?",
+                    "options": [
+                        "Élimination de la fragmentation externe",
+                        "Réduction de la fragmentation interne",
+                        "Simplification de la protection mémoire",
+                        "Augmentation de la taille des pages"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "La pagination divise la mémoire en cadres de taille fixe, éliminant la fragmentation externe, car les pages peuvent être placées dans n'importe quel cadre disponible. La fragmentation interne persiste, mais elle est limitée à la fin des pages."
+                },
+                {
+                    "id": 25,
+                    "topic": "segmentation",
+                    "question": "Dans un système de segmentation, quel algorithme est utilisé pour allouer des segments ?",
+                    "options": [
+                        "First-fit ou best-fit",
+                        "Page-fit",
+                        "Fixed-fit",
+                        "Random-fit"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "L'allocation de segments utilise des algorithmes comme first-fit (premier bloc suffisant) ou best-fit (meilleur ajustement), similaires aux partitions variables, car les segments ont des tailles variables."
+                },
+                {
+                    "id": 26,
+                    "topic": "combined_systems",
+                    "question": "Dans la pagination segmentée d'IBM, pourquoi les tables à plusieurs niveaux augmentent-elles le temps d'accès ?",
+                    "options": [
+                        "Elles nécessitent plus de registres",
+                        "Elles impliquent plusieurs accès mémoire pour traduire une adresse",
+                        "Elles réduisent la taille des pages",
+                        "Elles éliminent le TLB"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Les tables à plusieurs niveaux (par exemple, segment → table de pages) nécessitent plusieurs accès mémoire pour résoudre une adresse logique en adresse physique, augmentant le temps de traduction. Le TLB peut atténuer cela, mais il n'est pas éliminé."
+                },
+                {
+                    "id": 27,
+                    "topic": "memory_allocation",
+                    "question": "Dans un système à partitions variables, si un bloc de 10 Mo est divisé pour un processus de 6 Mo, quelle est la taille du bloc libre restant ?",
+                    "options": [
+                        "2 Mo",
+                        "4 Mo",
+                        "6 Mo",
+                        "8 Mo"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Un bloc de 10 Mo est divisé pour allouer 6 Mo à un processus. Le bloc libre restant est (10 - 6 = 4 , \text{Mo}). Les autres options ne correspondent pas au calcul."
+                },
+                {
+                    "id": 28,
+                    "topic": "protection_sharing",
+                    "question": "Pourquoi la segmentation est-elle considérée comme plus naturelle pour le partage que la pagination ?",
+                    "options": [
+                        "Elle utilise des pages de taille fixe",
+                        "Elle permet de partager des unités logiques comme des bibliothèques",
+                        "Elle élimine la fragmentation interne",
+                        "Elle simplifie la traduction des adresses"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La segmentation permet de partager des unités logiques (comme des bibliothèques ou des modules) en faisant pointer plusieurs tables de segments vers le même segment, ce qui est plus intuitif que de partager des pages individuelles."
+                },
+                {
+                    "id": 29,
+                    "topic": "swapping",
+                    "question": "Comment un système de permutation peut-il améliorer ses performances ?",
+                    "options": [
+                        "En augmentant la taille de la mémoire physique",
+                        "En utilisant des tampons pour chevaucher permutation et exécution",
+                        "En réduisant la taille des pages",
+                        "En éliminant la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Les tampons permettent de copier la mémoire vers le disque tout en continuant l'exécution d'autres processus, réduisant le temps d'attente lors des permutations. Les autres options ne sont pas directement liées."
+                },
+                {
+                    "id": 30,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes, quelle est la principale source de fragmentation ?",
+                    "options": [
+                        "Fragmentation externe",
+                        "Fragmentation interne",
+                        "Fragmentation logique",
+                        "Fragmentation physique"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La fragmentation interne survient dans les partitions fixes lorsque l'espace alloué à un processus est plus grand que nécessaire, laissant des portions inutilisées à l'intérieur de la partition."
+                },
+                {
+                    "id": 31,
+                    "topic": "paging",
+                    "question": "Dans un système de pagination, quelle est la fonction principale de la table de pages ?",
+                    "options": [
+                        "Stocker les données des processus",
+                        "Mapper les adresses logiques aux adresses physiques",
+                        "Gérer les interruptions matérielles",
+                        "Réduire la taille des programmes"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La table de pages (page table) mappe les numéros de page logiques aux adresses de cadres physiques, permettant la traduction des adresses lors de l'exécution."
+                },
+                {
+                    "id": 32,
+                    "topic": "segmentation",
+                    "question": "Quel problème de fragmentation la segmentation réintroduit-elle par rapport à la pagination ?",
+                    "options": [
+                        "Fragmentation interne",
+                        "Fragmentation externe",
+                        "Fragmentation logique",
+                        "Fragmentation physique"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La segmentation, en utilisant des blocs de taille variable, réintroduit la fragmentation externe, où des espaces libres non contigus ne peuvent pas être utilisés efficacement."
+                },
+                {
+                    "id": 33,
+                    "topic": "combined_systems",
+                    "question": "Dans Multics, quelle est la principale différence entre la segmentation paginée et la pagination segmentée ?",
+                    "options": [
+                        "La segmentation paginée divise les segments en pages",
+                        "La pagination segmentée utilise des pages de taille variable",
+                        "La segmentation paginée élimine la table de pages",
+                        "La pagination segmentée n'utilise pas de TLB"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "La segmentation paginée (comme dans Multics) divise chaque segment en pages, combinant la flexibilité de la segmentation avec l'efficacité de la pagination. La pagination segmentée utilise une approche hiérarchique différente."
+                },
+                {
+                    "id": 34,
+                    "topic": "memory_allocation",
+                    "question": "Quel algorithme d'allocation dans les partitions variables est le plus rapide à exécuter ?",
+                    "options": [
+                        "Best-fit",
+                        "First-fit",
+                        "Worst-fit",
+                        "Random-fit"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "First-fit alloue le premier bloc libre suffisamment grand, nécessitant moins de recherches que best-fit (qui compare tous les blocs) ou worst-fit (qui cherche le plus grand)."
+                },
+                {
+                    "id": 35,
+                    "topic": "protection_sharing",
+                    "question": "Dans un système de pagination, comment le partage de mémoire est-il généralement implémenté ?",
+                    "options": [
+                        "En utilisant des segments partagés",
+                        "En faisant pointer plusieurs tables de pages vers le même cadre",
+                        "En augmentant la taille des pages",
+                        "En désactivant la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le partage dans la pagination est réalisé en faisant pointer les tables de pages de différents processus vers le même cadre physique, permettant un accès commun à la mémoire."
+                },
+                {
+                    "id": 36,
+                    "topic": "swapping",
+                    "question": "Pourquoi une mémoire secondaire rapide est-elle essentielle pour la permutation ?",
+                    "options": [
+                        "Pour réduire la fragmentation interne",
+                        "Pour minimiser le temps de copie des processus",
+                        "Pour augmenter la taille des pages",
+                        "Pour simplifier la table de segments"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Une mémoire secondaire rapide (comme un SSD) réduit le temps nécessaire pour copier les processus entre la mémoire principale et le stockage, améliorant les performances de la permutation."
+                },
+                {
+                    "id": 37,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions variables, quel est l'effet du compactage ?",
+                    "options": [
+                        "Augmentation de la fragmentation interne",
+                        "Réduction de la fragmentation externe",
+                        "Élimination de la table de pages",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le compactage (ou ramasse-miettes) regroupe les blocs libres en un seul bloc contigu, réduisant la fragmentation externe dans les partitions variables."
+                },
+                {
+                    "id": 38,
+                    "topic": "paging",
+                    "question": "Quel est l'inconvénient principal de l'utilisation d'une table de pages en mémoire centrale ?",
+                    "options": [
+                        "Augmentation de la fragmentation externe",
+                        "Temps d'accès supplémentaire pour chaque traduction",
+                        "Réduction de la taille des pages",
+                        "Élimination du TLB"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Stocker la table de pages en mémoire centrale nécessite un accès mémoire supplémentaire pour chaque traduction d'adresse, augmentant le temps d'accès. Le TLB peut réduire cet impact."
+                },
+                {
+                    "id": 39,
+                    "topic": "segmentation",
+                    "question": "Pourquoi la segmentation nécessite-t-elle un mécanisme comme le ramasse-miettes ?",
+                    "options": [
+                        "Pour réduire la fragmentation interne",
+                        "Pour gérer la fragmentation externe",
+                        "Pour augmenter la taille des segments",
+                        "Pour simplifier la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La segmentation, avec ses blocs de taille variable, entraîne une fragmentation externe. Le ramasse-miettes (compactage) regroupe les espaces libres pour optimiser l'utilisation de la mémoire."
+                },
+                {
+                    "id": 40,
+                    "topic": "combined_systems",
+                    "question": "Dans la segmentation paginée, comment la table de segments interagit-elle avec les tables de pages ?",
+                    "options": [
+                        "Elle remplace les tables de pages",
+                        "Elle pointe vers des tables de pages pour chaque segment",
+                        "Elle élimine la fragmentation interne",
+                        "Elle simplifie la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Dans la segmentation paginée, la table de segments contient des entrées pointant vers des tables de pages spécifiques pour chaque segment, combinant les avantages des deux approches."
+                },
+                {
+                    "id": 41,
+                    "topic": "memory_allocation",
+                    "question": "Dans un système à partitions variables, quel algorithme peut conduire à une mauvaise utilisation de grands blocs ?",
+                    "options": [
+                        "Best-fit",
+                        "First-fit",
+                        "Worst-fit",
+                        "Next-fit"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Worst-fit alloue le plus grand bloc disponible, ce qui peut gaspiller de l'espace pour des processus plus petits, réduisant l'efficacité pour les futurs gros processus."
+                },
+                {
+                    "id": 42,
+                    "topic": "protection_sharing",
+                    "question": "Dans un système de pagination, comment la protection est-elle généralement assurée ?",
+                    "options": [
+                        "En utilisant des bits de protection dans la table de pages",
+                        "En augmentant la taille des segments",
+                        "En désactivant le TLB",
+                        "En éliminant la table de segments"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "La protection dans la pagination est assurée par des bits de protection (lecture/écriture/exécution) dans la table de pages, qui contrôlent l'accès à chaque cadre."
+                },
+                {
+                    "id": 43,
+                    "topic": "swapping",
+                    "question": "Quel est l'effet d'une tranche de temps longue dans un système de permutation ?",
+                    "options": [
+                        "Augmentation de la fragmentation externe",
+                        "Réduction du nombre de permutations",
+                        "Élimination de la table de pages",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Une tranche de temps longue permet à un processus de s'exécuter plus longtemps avant d'être permuté, réduisant le nombre total de permutations et le temps associé."
+                },
+                {
+                    "id": 44,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes, comment la permutation augmente-t-elle le degré de multiprogrammation ?",
+                    "options": [
+                        "En augmentant la taille des partitions",
+                        "En permettant le partage des partitions entre processus",
+                        "En réduisant la fragmentation interne",
+                        "En simplifiant la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La permutation permet de charger différents processus dans les mêmes partitions fixes à différents moments, augmentant le nombre de processus actifs (multiprogrammation)."
+                },
+                {
+                    "id": 45,
+                    "topic": "paging",
+                    "question": "Pourquoi la pagination est-elle considérée comme une forme de relocalisation dynamique ?",
+                    "options": [
+                        "Elle utilise des segments de taille variable",
+                        "Elle mappe les adresses logiques aux adresses physiques à l'exécution",
+                        "Elle élimine la fragmentation interne",
+                        "Elle simplifie la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La pagination traduit les adresses logiques en adresses physiques à l'exécution via la table de pages, permettant une relocalisation dynamique des programmes."
+                },
+                {
+                    "id": 46,
+                    "topic": "segmentation",
+                    "question": "Quel est l'avantage principal de la segmentation pour la protection ?",
+                    "options": [
+                        "Elle élimine la fragmentation externe",
+                        "Elle associe des permissions spécifiques à chaque segment",
+                        "Elle réduit la taille des tables de pages",
+                        "Elle simplifie la traduction des adresses"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La segmentation permet d'associer des bits de protection (lecture/écriture/exécution) à chaque segment, offrant une protection plus granulaire que la pagination seule."
+                },
+                {
+                    "id": 47,
+                    "topic": "combined_systems",
+                    "question": "Dans la pagination segmentée d'IBM, quelle est la taille de la table de pages pour une adresse de 24 bits avec 12 bits pour le numéro de page ?",
+                    "options": [
+                        "4 Ko",
+                        "8 Ko",
+                        "16 Ko",
+                        "32 Ko"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Avec 12 bits pour le numéro de page, il y a (2^{12} = 4096) entrées. Chaque entrée est de 2 octets, donc la taille de la table est (4096 times 2 = 8192 , text{octets} = 8 , text{Ko})."
+                },
+                {
+                    "id": 48,
+                    "topic": "memory_allocation",
+                    "question": "Dans un système à partitions variables, quel est l'effet de libérer un bloc de mémoire ?",
+                    "options": [
+                        "Augmentation de la fragmentation interne",
+                        "Regroupement possible avec les blocs adjacents",
+                        "Élimination de la table de pages",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Libérer un bloc de mémoire permet de le regrouper avec les blocs libres adjacents, réduisant la fragmentation externe dans les partitions variables."
+                },
+                {
+                    "id": 49,
+                    "topic": "protection_sharing",
+                    "question": "Dans un système de segmentation, comment le partage est-il facilité ?",
+                    "options": [
+                        "En augmentant la taille des pages",
+                        "En faisant pointer plusieurs tables de segments vers le même segment",
+                        "En réduisant la fragmentation interne",
+                        "En éliminant la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le partage est facilité en faisant pointer les tables de segments de différents processus vers un même segment, permettant un accès commun à des données ou du code."
+                },
+                {
+                    "id": 50,
+                    "topic": "swapping",
+                    "question": "Quel est l'inconvénient principal de la permutation dans un système multi-tâches ?",
+                    "options": [
+                        "Augmentation de la fragmentation interne",
+                        "Temps élevé pour les changements de contexte",
+                        "Réduction de la taille de la mémoire logique",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La permutation nécessite de copier des processus entiers entre la mémoire principale et le stockage secondaire, ce qui augmente le temps des changements de contexte."
+                },
+                {
+                    "id": 51,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes, quel est l'effet de l'utilisation d'une file globale avec la stratégie 'best-fit only' ?",
+                    "options": [
+                        "Réduction de la fragmentation externe",
+                        "Allocation à la plus petite partition disponible",
+                        "Augmentation de la fragmentation interne",
+                        "Élimination de la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Avec une file globale et 'best-fit only', le processus est alloué à la plus petite partition disponible qui peut l'accueillir, minimisant le gaspillage d'espace (mais pouvant augmenter la fragmentation interne)."
+                },
+                {
+                    "id": 52,
+                    "topic": "paging",
+                    "question": "Dans un système de pagination, quel est l'effet d'une taille de page plus grande ?",
+                    "options": [
+                        "Réduction de la fragmentation interne",
+                        "Augmentation de la fragmentation interne",
+                        "Élimination de la fragmentation externe",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Une taille de page plus grande augmente la fragmentation interne, car plus d'espace peut être inutilisé à la fin de chaque page. La fragmentation externe est déjà éliminée par la pagination."
+                },
+                {
+                    "id": 53,
+                    "topic": "segmentation",
+                    "question": "Quel est l'inconvénient principal de la segmentation par rapport à la pagination ?",
+                    "options": [
+                        "Augmentation de la fragmentation interne",
+                        "Retour de la fragmentation externe",
+                        "Réduction de la taille des tables de pages",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La segmentation, avec ses blocs de taille variable, réintroduit la fragmentation externe, contrairement à la pagination qui l'élimine grâce à des cadres fixes."
+                },
+                {
+                    "id": 54,
+                    "topic": "combined_systems",
+                    "question": "Dans Multics, pourquoi la segmentation paginée réduit-elle la fragmentation externe ?",
+                    "options": [
+                        "Elle utilise des segments de taille fixe",
+                        "Elle divise les segments en pages de taille fixe",
+                        "Elle élimine la table de segments",
+                        "Elle simplifie la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La segmentation paginée divise les segments en pages de taille fixe, permettant de les placer dans des cadres non contigus, éliminant ainsi la fragmentation externe."
+                },
+                {
+                    "id": 55,
+                    "topic": "memory_allocation",
+                    "question": "Dans un système à partitions variables, quel est l'effet de l'algorithme worst-fit sur les petits processus ?",
+                    "options": [
+                        "Réduction de la fragmentation externe",
+                        "Allocation dans de grands blocs, gaspillant de l'espace",
+                        "Élimination de la fragmentation interne",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Worst-fit alloue les petits processus dans les plus grands blocs disponibles, gaspillant de l'espace et réduisant la disponibilité pour les gros processus."
+                },
+                {
+                    "id": 56,
+                    "topic": "protection_sharing",
+                    "question": "Dans un système de pagination, quel mécanisme permet de protéger une page contre l'écriture ?",
+                    "options": [
+                        "Utilisation d'un registre frontière",
+                        "Définition d'un bit de protection dans la table de pages",
+                        "Augmentation de la taille des pages",
+                        "Élimination de la table de segments"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Un bit de protection (par exemple, lecture seule) dans la table de pages empêche l'écriture sur une page spécifique, offrant une protection granulaire."
+                },
+                {
+                    "id": 57,
+                    "topic": "swapping",
+                    "question": "Comment les tampons améliorent-ils les performances dans un système de permutation ?",
+                    "options": [
+                        "En réduisant la fragmentation interne",
+                        "En permettant la permutation et l'exécution simultanées",
+                        "En augmentant la taille des pages",
+                        "En simplifiant la table de segments"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Les tampons stockent temporairement les données pendant la permutation, permettant à l'exécution d'un processus de se poursuivre pendant que la mémoire est copiée, réduisant les temps d'attente."
+                },
+                {
+                    "id": 58,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes, quel est l'effet de l'utilisation d'une file globale avec 'best available fit' ?",
+                    "options": [
+                        "Allocation à la plus grande partition disponible",
+                        "Allocation à la plus petite partition disponible",
+                        "Réduction de la fragmentation externe",
+                        "Élimination de la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "La stratégie 'best available fit' alloue le processus à la plus petite partition disponible dans une file globale, minimisant le gaspillage d'espace."
+                },
+                {
+                    "id": 59,
+                    "topic": "paging",
+                    "question": "Dans un système de pagination, quel est l'inconvénient principal d'une table de pages implantée par des registres ?",
+                    "options": [
+                        "Augmentation de la fragmentation externe",
+                        "Temps élevé pour modifier les registres lors d'un changement de contexte",
+                        "Réduction de la taille des pages",
+                        "Élimination du TLB"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Une table de pages implantée par des registres nécessite la mise à jour de tous les registres lors d'un changement de contexte, ce qui est coûteux en temps, surtout pour un grand nombre de pages."
+                },
+                {
+                    "id": 60,
+                    "topic": "segmentation",
+                    "question": "Dans un système de segmentation, comment la taille des segments affecte-t-elle la fragmentation externe ?",
+                    "options": [
+                        "Les segments plus grands réduisent la fragmentation externe",
+                        "Les segments plus petits réduisent la fragmentation externe",
+                        "La taille des segments n'a aucun effet",
+                        "Les segments éliminent la fragmentation externe"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Des segments plus petits réduisent la fragmentation externe, car ils laissent des espaces libres plus petits et plus facilement réutilisables, contrairement aux grands segments."
+                },
+                {
+                    "id": 61,
+                    "topic": "combined_systems",
+                    "question": "Dans la pagination segmentée d'IBM, quel est l'effet d'une table à deux niveaux sur la taille de la table de pages ?",
+                    "options": [
+                        "Elle augmente la taille totale",
+                        "Elle réduit la taille totale",
+                        "Elle élimine la table de pages",
+                        "Elle simplifie la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Une table à deux niveaux (segment → table de pages) réduit la taille totale de la table de pages en ne stockant que les entrées nécessaires pour les segments actifs."
+                },
+                {
+                    "id": 62,
+                    "topic": "memory_allocation",
+                    "question": "Dans un système à partitions variables, quel est l'effet de l'algorithme first-fit sur la fragmentation externe ?",
+                    "options": [
+                        "Réduction immédiate de la fragmentation externe",
+                        "Augmentation progressive de la fragmentation externe",
+                        "Élimination de la fragmentation externe",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "First-fit alloue le premier bloc suffisant, ce qui peut fragmenter les grands blocs en petits morceaux au fil du temps, augmentant la fragmentation externe."
+                },
+                {
+                    "id": 63,
+                    "topic": "protection_sharing",
+                    "question": "Dans un système de segmentation, quel mécanisme permet de protéger un segment contre l'exécution non autorisée ?",
+                    "options": [
+                        "Utilisation d'un registre frontière",
+                        "Définition d'un bit d'exécution dans la table de segments",
+                        "Augmentation de la taille des segments",
+                        "Élimination de la table de pages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Un bit d'exécution dans la table de segments (noté 'x') empêche l'exécution non autorisée d'un segment, offrant une protection spécifique."
+                },
+                {
+                    "id": 64,
+                    "topic": "swapping",
+                    "question": "Dans un système de permutation, quel est l'effet d'améliorer la performance des disques ?",
+                    "options": [
+                        "Augmentation de la fragmentation interne",
+                        "Réduction du temps de permutation",
+                        "Élimination de la table de pages",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Des disques plus rapides réduisent le temps nécessaire pour copier les processus entre la mémoire principale et le stockage secondaire, améliorant les performances de la permutation."
+                },
+                {
+                    "id": 65,
+                    "topic": "partitions",
+                    "question": "Dans un système à partitions fixes, quel est l'effet d'une partition de taille non idéale ?",
+                    "options": [
+                        "Réduction de la fragmentation interne",
+                        "Augmentation de la fragmentation interne",
+                        "Élimination de la fragmentation externe",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Une partition de taille non idéale (trop grande pour un processus) augmente la fragmentation interne, car l'espace inutilisé reste inutilisable à l'intérieur de la partition."
+                },
+                {
+                    "id": 66,
+                    "topic": "paging",
+                    "question": "Dans un système de pagination, quel est l'effet de l'utilisation d'une mémoire associative (TLB) ?",
+                    "options": [
+                        "Augmentation de la fragmentation externe",
+                        "Réduction du temps de traduction des adresses",
+                        "Élimination de la table de pages",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le TLB (Translation Lookaside Buffer) stocke des traductions d'adresses récentes, réduisant le temps nécessaire pour accéder à la table de pages en mémoire centrale."
+                },
+                {
+                    "id": 67,
+                    "topic": "segmentation",
+                    "question": "Dans un système de segmentation, quel est l'effet de l'utilisation du compactage ?",
+                    "options": [
+                        "Augmentation de la fragmentation interne",
+                        "Réduction de la fragmentation externe",
+                        "Élimination de la table de segments",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Le compactage regroupe les segments libres en un seul bloc contigu, réduisant la fragmentation externe dans un système de segmentation."
+                },
+                {
+                    "id": 68,
+                    "topic": "combined_systems",
+                    "question": "Dans la segmentation paginée de Multics, quel est l'avantage principal de diviser les segments en pages ?",
+                    "options": [
+                        "Augmentation de la fragmentation externe",
+                        "Élimination de la fragmentation externe",
+                        "Réduction de la taille des segments",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Diviser les segments en pages permet de les placer dans des cadres non contigus, éliminant la fragmentation externe tout en conservant la flexibilité de la segmentation."
+                },
+                {
+                    "id": 69,
+                    "topic": "memory_allocation",
+                    "question": "Dans un système à partitions variables, quel est l'effet de l'algorithme best-fit sur les gros processus ?",
+                    "options": [
+                        "Allocation rapide dans de petits blocs",
+                        "Attente prolongée pour un bloc suffisamment grand",
+                        "Élimination de la fragmentation externe",
+                        "Simplification de la protection mémoire"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Best-fit peut fragmenter la mémoire en petits blocs, obligeant les gros processus à attendre qu'un bloc suffisamment grand soit libéré ou compacté."
+                },
+                {
+                    "id": 70,
+                    "topic": "protection_sharing",
+                    "question": "Dans un système de pagination, comment le partage de pages est-il sécurisé ?",
+                    "options": [
+                        "En utilisant des bits de protection dans la table de pages",
+                        "En augmentant la taille des pages",
+                        "En éliminant la table de segments",
+                        "En désactivant le TLB"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Les bits de protection dans la table de pages (lecture/écriture/exécution) contrôlent l'accès aux pages partagées, assurant un partage sécurisé entre processus."
+                }
+            ],
+            "true-false": [
+                {
+                    "id": 71,
+                    "topic": "introduction",
+                    "question": "La mémoire dans un système multi-tâches est toujours partagée de manière égale entre les processus.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. La mémoire est partagée en fonction des besoins des processus et des techniques de gestion (comme les partitions ou la pagination), pas nécessairement de manière égale."
+                },
+                {
+                    "id": 72,
+                    "topic": "no_management",
+                    "question": "Sans gestion de mémoire, les systèmes dédiés offrent une protection efficace des données.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. Sans gestion de mémoire, il n'y a pas de mécanismes pour protéger les données contre les accès non autorisés, ce qui est un inconvénient majeur."
+                },
+                {
+                    "id": 73,
+                    "topic": "resident_monitor",
+                    "question": "Le registre frontière est utilisé pour protéger la mémoire du moniteur résident.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 0,
+                    "explanation": "Vrai. Le registre frontière compare les adresses générées par les programmes à une limite, empêchant l'accès à la mémoire réservée au moniteur."
+                },
+                {
+                    "id": 74,
+                    "topic": "swapping",
+                    "question": "La permutation nécessite une mémoire secondaire lente pour fonctionner efficacement.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. La permutation bénéficie d'une mémoire secondaire rapide (comme un SSD) pour minimiser le temps de copie des processus."
+                },
+                {
+                    "id": 75,
+                    "topic": "partitions",
+                    "question": "Les partitions variables éliminent complètement la fragmentation interne.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. Les partitions variables réduisent la fragmentation interne en allouant exactement l'espace requis, mais elles introduisent la fragmentation externe."
+                },
+                {
+                    "id": 76,
+                    "topic": "paging",
+                    "question": "La pagination élimine la fragmentation externe.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 0,
+                    "explanation": "Vrai. La pagination divise la mémoire en cadres de taille fixe, permettant de placer les pages dans n'importe quel cadre disponible, éliminant ainsi la fragmentation externe."
+                },
+                {
+                    "id": 77,
+                    "topic": "segmentation",
+                    "question": "La segmentation élimine la fragmentation interne.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. La segmentation peut introduire une fragmentation interne si les segments ne sont pas parfaitement alignés avec les besoins des processus."
+                },
+                {
+                    "id": 78,
+                    "topic": "combined_systems",
+                    "question": "La segmentation paginée introduit de la fragmentation externe.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. La segmentation paginée divise les segments en pages de taille fixe, éliminant la fragmentation externe, bien qu'elle introduise une fragmentation interne."
+                },
+                {
+                    "id": 79,
+                    "topic": "memory_allocation",
+                    "question": "L'algorithme best-fit est toujours le plus rapide pour l'allocation dans les partitions variables.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. Best-fit nécessite de parcourir tous les blocs libres pour trouver le meilleur ajustement, ce qui est plus lent que first-fit, qui s'arrête au premier bloc suffisant."
+                },
+                {
+                    "id": 80,
+                    "topic": "protection_sharing",
+                    "question": "Le partage dans la pagination nécessite des tables de segments.",
+                    "options": ["Vrai", "Faux"],
+                    "correctAnswer": 1,
+                    "explanation": "Faux. Le partage dans la pagination est réalisé en faisant pointer plusieurs tables de pages vers le même cadre physique, sans nécessiter de tables de segments."
+                }
+            ],
+            "short-answer": [
+                {
+                    "id": 81,
+                    "topic": "introduction",
+                    "question": "Expliquez pourquoi la mémoire est considérée comme un vecteur d'octets dans les systèmes d'exploitation.",
+                    "correctAnswer": ["adresse", "octets", "lecture", "écriture"],
+                    "explanation": "La mémoire est vue comme un vecteur d'octets, où chaque octet a une adresse unique, permettant des opérations de lecture et d'écriture pour interagir avec les programmes et les données."
+                },
+                {
+                    "id": 82,
+                    "topic": "no_management",
+                    "question": "Nommez un avantage et un inconvénient de l'absence de gestion de mémoire dans un système dédié.",
+                    "correctAnswer": ["contrôle", "usager", "corruption", "protection"],
+                    "explanation": "Avantage : l'usager a un contrôle total sur la mémoire, optimisant pour des tâches spécifiques. Inconvénient : absence de protection, risquant la corruption par des accès non autorisés."
+                },
+                {
+                    "id": 83,
+                    "topic": "resident_monitor",
+                    "question": "Décrivez le rôle du registre frontière dans la protection de la mémoire.",
+                    "correctAnswer": ["comparaison", "adresse", "erreur", "moniteur"],
+                    "explanation": "Le registre frontière compare chaque adresse générée par un programme à une limite prédéfinie. Si l'adresse est inférieure à la frontière, une erreur est déclenchée, protégeant la mémoire du moniteur."
+                },
+                {
+                    "id": 84,
+                    "topic": "swapping",
+                    "question": "Expliquez comment les tampons améliorent les performances de la permutation.",
+                    "correctAnswer": ["chevauchement", "exécution", "copie", "mémoire"],
+                    "explanation": "Les tampons permettent de copier la mémoire vers le disque tout en continuant l'exécution d'autres processus, réduisant les temps d'attente lors des permutations."
+                },
+                {
+                    "id": 85,
+                    "topic": "partitions",
+                    "question": "Décrivez la différence entre une file par région et une file globale dans les partitions fixes.",
+                    "correctAnswer": ["file", "région", "globale", "allocation"],
+                    "explanation": "Une file par région associe une file d'attente à chaque partition, allouant les processus à leur partition spécifique. Une file globale utilise une seule file pour toutes les partitions, permettant une allocation plus flexible (par exemple, best-fit)."
+                },
+                {
+                    "id": 86,
+                    "topic": "paging",
+                    "question": "Expliquez comment une adresse logique est traduite en adresse physique dans la pagination.",
+                    "correctAnswer": ["page", "déplacement", "table", "cadre"],
+                    "explanation": "Une adresse logique est divisée en numéro de page et déplacement. Le numéro de page indexe la table de pages pour obtenir l'adresse du cadre physique, à laquelle le déplacement est ajouté pour obtenir l'adresse physique."
+                },
+                {
+                    "id": 87,
+                    "topic": "segmentation",
+                    "question": "Décrivez comment le partage est implémenté dans un système de segmentation.",
+                    "correctAnswer": ["table", "segments", "pointeur", "partage"],
+                    "explanation": "Le partage est implémenté en faisant pointer les tables de segments de plusieurs processus vers un même segment de mémoire, permettant un accès commun à des données ou du code."
+                },
+                {
+                    "id": 88,
+                    "topic": "combined_systems",
+                    "question": "Expliquez pourquoi la segmentation paginée élimine la fragmentation externe.",
+                    "correctAnswer": ["pages", "cadres", "non contigus", "segments"],
+                    "explanation": "La segmentation paginée divise les segments en pages de taille fixe, qui peuvent être placées dans des cadres non contigus, éliminant la fragmentation externe tout en conservant la structure des segments."
+                },
+                {
+                    "id": 89,
+                    "topic": "memory_allocation",
+                    "question": "Comparez les algorithmes first-fit et best-fit dans les partitions variables.",
+                    "correctAnswer": ["vitesse", "fragmentation", "first-fit", "best-fit"],
+                    "explanation": "First-fit est plus rapide, car il alloue le premier bloc suffisant, mais peut augmenter la fragmentation externe. Best-fit minimise la fragmentation externe à court terme, mais est plus lent, car il recherche le bloc le plus adapté."
+                },
+                {
+                    "id": 90,
+                    "topic": "protection_sharing",
+                    "question": "Décrivez comment la protection est assurée dans un système de segmentation.",
+                    "correctAnswer": ["bits", "protection", "table", "segments"],
+                    "explanation": "La protection est assurée par des bits de protection (lecture/écriture/exécution) dans la table de segments, qui définissent les autorisations d'accès pour chaque segment."
+                },
+                {
+                    "id": 91,
+                    "topic": "introduction",
+                    "question": "Pourquoi la gestion de la mémoire est-elle essentielle dans un système multi-tâches ?",
+                    "correctAnswer": ["partage", "isolation", "ressources", "processus"],
+                    "explanation": "La gestion de la mémoire permet de partager les ressources mémoire entre plusieurs processus tout en assurant leur isolation, évitant les interférences et optimisant l'utilisation."
+                },
+                {
+                    "id": 92,
+                    "topic": "no_management",
+                    "question": "Pourquoi les systèmes dédiés utilisent-ils souvent aucune gestion de mémoire ?",
+                    "correctAnswer": ["optimisation", "contrôle", "tâche", "spécifique"],
+                    "explanation": "Les systèmes dédiés, conçus pour une tâche spécifique, permettent à l'usager de contrôler entièrement la mémoire pour optimiser les performances, au détriment de la protection."
+                },
+                {
+                    "id": 93,
+                    "topic": "resident_monitor",
+                    "question": "Expliquez le concept de relocalisation dans un système avec moniteur résident.",
+                    "correctAnswer": ["translation", "adresses", "frontière", "logiques"],
+                    "explanation": "La relocalisation translate les adresses logiques d'un programme (de 0 à max) en adresses physiques (après la frontière) en ajoutant la valeur du registre de translation à chaque adresse."
+                },
+                {
+                    "id": 94,
+                    "topic": "swapping",
+                    "question": "Décrivez un problème lié à la permutation d'un processus en attente d'une E/S.",
+                    "correctAnswer": ["retard", "E/S", "mémoire", "secondaire"],
+                    "explanation": "Permuter un processus en attente d'une E/S vers la mémoire secondaire peut retarder la complétion de l'E/S, car le processus n'est plus en mémoire pour recevoir les données."
+                },
+                {
+                    "id": 95,
+                    "topic": "partitions",
+                    "question": "Expliquez pourquoi les partitions fixes entraînent une fragmentation interne.",
+                    "correctAnswer": ["taille", "fixe", "espace", "inutilisé"],
+                    "explanation": "Les partitions fixes ont une taille prédéfinie, et si un processus utilise moins d'espace que la partition, l'espace restant est inutilisé, causant une fragmentation interne."
+                },
+                {
+                    "id": 96,
+                    "topic": "paging",
+                    "question": "Décrivez le rôle du TLB dans un système de pagination.",
+                    "correctAnswer": ["cache", "traductions", "adresses", "rapidité"],
+                    "explanation": "Le TLB (Translation Lookaside Buffer) est une mémoire cache qui stocke les traductions d'adresses récentes, réduisant le temps d'accès à la table de pages en mémoire centrale."
+                },
+                {
+                    "id": 97,
+                    "topic": "segmentation",
+                    "question": "Expliquez pourquoi la référence indirecte (PIC) est nécessaire pour le partage de segments.",
+                    "correctAnswer": ["position", "indépendante", "segments", "partage"],
+                    "explanation": "Le PIC (Position-Independent Code) permet à un segment partagé d'être référencé sans dépendre de sa position en mémoire, facilitant le partage entre différents processus."
+                },
+                {
+                    "id": 98,
+                    "topic": "combined_systems",
+                    "question": "Comparez la pagination segmentée et la segmentation paginée en termes de fragmentation.",
+                    "correctAnswer": ["fragmentation", "externe", "interne", "pages"],
+                    "explanation": "La pagination segmentée peut introduire une fragmentation externe due à la gestion des segments, tandis que la segmentation paginée élimine la fragmentation externe en divisant les segments en pages, mais introduit une fragmentation interne."
+                },
+                {
+                    "id": 99,
+                    "topic": "memory_allocation",
+                    "question": "Expliquez l'effet du compactage dans les partitions variables.",
+                    "correctAnswer": ["regroupement", "blocs", "fragmentation", "externe"],
+                    "explanation": "Le compactage regroupe les blocs libres en un seul bloc contigu, réduisant la fragmentation externe et augmentant l'espace disponible pour les nouveaux processus."
+                },
+                {
+                    "id": 100,
+                    "topic": "protection_sharing",
+                    "question": "Décrivez comment un système de pagination gère le partage sécurisé de mémoire.",
+                    "correctAnswer": ["tables", "pages", "cadres", "protection"],
+                    "explanation": "Le partage sécurisé est géré en faisant pointer plusieurs tables de pages vers le même cadre physique, avec des bits de protection (lecture/écriture) dans la table de pages pour contrôler l'accès."
+                }
+            ]
+        },
+        "flashcardData": [
+            {
+                "id": 1,
+                "topic": "introduction",
+                "front": "Pourquoi la mémoire est-elle partagée dans un système multi-tâches ?",
+                "back": "Pour permettre l'exécution simultanée de plusieurs programmes, optimisant l'utilisation des ressources."
+            },
+            {
+                "id": 2,
+                "topic": "no_management",
+                "front": "Quel est un inconvénient de l'absence de gestion de mémoire ?",
+                "back": "Risque de corruption de mémoire due à l'absence de protection entre processus."
+            },
+            {
+                "id": 3,
+                "topic": "resident_monitor",
+                "front": "Quel est le rôle du registre frontière ?",
+                "back": "Protéger la mémoire du moniteur en comparant les adresses à une limite prédéfinie."
+            },
+            {
+                "id": 4,
+                "topic": "swapping",
+                "front": "Pourquoi une mémoire secondaire rapide est-elle importante pour la permutation ?",
+                "back": "Pour minimiser le temps de copie des processus entre la mémoire principale et le stockage."
+            },
+            {
+                "id": 5,
+                "topic": "partitions",
+                "front": "Quelle est la différence entre partitions fixes et variables ?",
+                "back": "Les partitions fixes ont une taille statique, tandis que les variables ont une taille dynamique."
+            },
+            {
+                "id": 6,
+                "topic": "paging",
+                "front": "Quel est le rôle de la table de pages ?",
+                "back": "Mapper les adresses logiques aux adresses physiques pour la traduction à l'exécution."
+            },
+            {
+                "id": 7,
+                "topic": "segmentation",
+                "front": "Comment le partage est-il implémenté dans la segmentation ?",
+                "back": "En faisant pointer plusieurs tables de segments vers un même segment de mémoire."
+            },
+            {
+                "id": 8,
+                "topic": "combined_systems",
+                "front": "Pourquoi la segmentation paginée élimine-t-elle la fragmentation externe ?",
+                "back": "Elle divise les segments en pages placées dans des cadres non contigus."
+            },
+            {
+                "id": 9,
+                "topic": "memory_allocation",
+                "front": "Quel est l'avantage de l'algorithme first-fit ?",
+                "back": "Il est rapide, car il alloue le premier bloc libre suffisamment grand."
+            },
+            {
+                "id": 10,
+                "topic": "protection_sharing",
+                "front": "Comment la protection est-elle assurée dans la pagination ?",
+                "back": "Par des bits de protection (lecture/écriture/exécution) dans la table de pages."
+            },
+            {
+                "id": 11,
+                "topic": "introduction",
+                "front": "Qu'est-ce que la mémoire logique dans un système d'exploitation ?",
+                "back": "Un espace d'adressage abstrait utilisé par les processus, indépendant de la mémoire physique."
+            },
+            {
+                "id": 12,
+                "topic": "no_management",
+                "front": "Pourquoi les systèmes dédiés évitent-ils la gestion de mémoire ?",
+                "back": "Pour permettre un contrôle total par l'usager, optimisant les performances pour une tâche spécifique."
+            },
+            {
+                "id": 13,
+                "topic": "resident_monitor",
+                "front": "Qu'est-ce que la relocalisation dans un système avec moniteur résident ?",
+                "back": "Translation des adresses logiques en adresses physiques en ajoutant la valeur du registre de translation."
+            },
+            {
+                "id": 14,
+                "topic": "swapping",
+                "front": "Quel problème survient si un processus en attente d'E/S est permuté ?",
+                "back": "Retard dans la complétion de l'E/S, car le processus n'est plus en mémoire."
+            },
+            {
+                "id": 15,
+                "topic": "partitions",
+                "front": "Pourquoi les partitions fixes entraînent-elles une fragmentation interne ?",
+                "back": "L'espace inutilisé dans une partition trop grande pour un processus reste inutilisable."
+            },
+            {
+                "id": 16,
+                "topic": "paging",
+                "front": "Pourquoi les tailles de page sont-elles des puissances de 2 ?",
+                "back": "Pour simplifier l'extraction du numéro de page et du déplacement via des opérations binaires."
+            },
+            {
+                "id": 17,
+                "topic": "segmentation",
+                "front": "Pourquoi la segmentation est-elle naturelle pour le partage ?",
+                "back": "Elle permet de partager des unités logiques, comme des bibliothèques, via des tables de segments."
+            },
+            {
+                "id": 18,
+                "topic": "combined_systems",
+                "front": "Quelle est la différence entre segmentation paginée et pagination segmentée ?",
+                "back": "La segmentation paginée divise les segments en pages, tandis que la pagination segmentée utilise une hiérarchie segment-table de pages."
+            },
+            {
+                "id": 19,
+                "topic": "memory_allocation",
+                "front": "Quel est l'inconvénient de l'algorithme best-fit ?",
+                "back": "Il peut créer de petits blocs inutilisables, augmentant la fragmentation externe à long terme."
+            },
+            {
+                "id": 20,
+                "topic": "protection_sharing",
+                "front": "Comment la segmentation protège-t-elle les segments ?",
+                "back": "Par des bits de protection (lecture/écriture/exécution) dans la table de segments."
+            },
+            {
+                "id": 21,
+                "topic": "swapping",
+                "front": "Comment les tampons améliorent-ils la permutation ?",
+                "back": "Ils permettent de chevaucher la copie de mémoire avec l'exécution d'autres processus."
+            },
+            {
+                "id": 22,
+                "topic": "partitions",
+                "front": "Quel est l'effet du compactage dans les partitions variables ?",
+                "back": "Il regroupe les blocs libres, réduisant la fragmentation externe."
+            },
+            {
+                "id": 23,
+                "topic": "paging",
+                "front": "Quel est le rôle du TLB dans la pagination ?",
+                "back": "Il stocke des traductions d'adresses récentes pour réduire le temps d'accès à la table de pages."
+            },
+            {
+                "id": 24,
+                "topic": "segmentation",
+                "front": "Quel problème de fragmentation la segmentation réintroduit-elle ?",
+                "back": "La fragmentation externe, due à l'utilisation de blocs de taille variable."
+            },
+            {
+                "id": 25,
+                "topic": "combined_systems",
+                "front": "Pourquoi la pagination segmentée utilise-t-elle une table à deux niveaux ?",
+                "back": "Pour réduire la taille de la table de pages en divisant l'espace par segments."
+            },
+            {
+                "id": 26,
+                "topic": "memory_allocation",
+                "front": "Pourquoi l'algorithme worst-fit peut-il être inefficace ?",
+                "back": "Il gaspille de grands blocs pour des petits processus, réduisant l'espace pour les gros processus."
+            },
+            {
+                "id": 27,
+                "topic": "protection_sharing",
+                "front": "Comment le partage est-il sécurisé dans la pagination ?",
+                "back": "Par des bits de protection dans la table de pages, contrôlant l'accès aux cadres partagés."
+            },
+            {
+                "id": 28,
+                "topic": "introduction",
+                "front": "Pourquoi la gestion de mémoire est-elle essentielle dans un système multi-tâches ?",
+                "back": "Pour partager et isoler les ressources mémoire entre processus, évitant les interférences."
+            },
+            {
+                "id": 29,
+                "topic": "no_management",
+                "front": "Quel est l'avantage de l'absence de gestion de mémoire ?",
+                "back": "Contrôle total par l'usager, optimisant pour des tâches spécifiques."
+            },
+            {
+                "id": 30,
+                "topic": "resident_monitor",
+                "front": "Pourquoi le moniteur résident est-il placé en haut ou en bas de la mémoire ?",
+                "back": "Pour protéger le système contre les accès non autorisés via la frontière."
+            },
+            {
+                "id": 31,
+                "topic": "swapping",
+                "front": "Quel est l'effet d'une tranche de temps longue dans la permutation ?",
+                "back": "Réduction du nombre de permutations, diminuant le temps de changement de contexte."
+            },
+            {
+                "id": 32,
+                "topic": "partitions",
+                "front": "Comment la permutation augmente-t-elle la multiprogrammation dans les partitions fixes ?",
+                "back": "En chargeant différents processus dans les mêmes partitions à différents moments."
+            },
+            {
+                "id": 33,
+                "topic": "paging",
+                "front": "Pourquoi la pagination est-elle une relocalisation dynamique ?",
+                "back": "Elle traduit les adresses logiques en physiques à l'exécution via la table de pages."
+            },
+            {
+                "id": 34,
+                "topic": "segmentation",
+                "front": "Pourquoi le PIC est-il nécessaire pour le partage de segments ?",
+                "back": "Pour permettre des références indépendantes de la position des segments."
+            },
+            {
+                "id": 35,
+                "topic": "combined_systems",
+                "front": "Comment la table de segments interagit-elle dans la segmentation paginée ?",
+                "back": "Elle pointe vers des tables de pages pour chaque segment."
+            },
+            {
+                "id": 36,
+                "topic": "memory_allocation",
+                "front": "Quel est l'effet de libérer un bloc dans les partitions variables ?",
+                "back": "Regroupement possible avec les blocs adjacents, réduisant la fragmentation externe."
+            },
+            {
+                "id": 37,
+                "topic": "protection_sharing",
+                "front": "Pourquoi la segmentation est-elle plus granulaire pour la protection ?",
+                "back": "Elle associe des permissions spécifiques à chaque segment."
+            },
+            {
+                "id": 38,
+                "topic": "swapping",
+                "front": "Pourquoi une mémoire secondaire lente affecte-t-elle la permutation ?",
+                "back": "Elle augmente le temps de copie des processus, ralentissant les changements de contexte."
+            },
+            {
+                "id": 39,
+                "topic": "partitions",
+                "front": "Quelle est la principale source de fragmentation dans les partitions fixes ?",
+                "back": "La fragmentation interne, due à l'espace inutilisé dans les partitions."
+            },
+            {
+                "id": 40,
+                "topic": "paging",
+                "front": "Quel est l'inconvénient d'une table de pages en mémoire centrale ?",
+                "back": "Temps d'accès supplémentaire pour chaque traduction d'adresse."
+            },
+            {
+                "id": 41,
+                "topic": "segmentation",
+                "front": "Pourquoi la segmentation nécessite-t-elle un compactage ?",
+                "back": "Pour gérer la fragmentation externe en regroupant les espaces libres."
+            },
+            {
+                "id": 42,
+                "topic": "combined_systems",
+                "front": "Pourquoi la segmentation paginée est-elle efficace dans Multics ?",
+                "back": "Elle combine la flexibilité de la segmentation avec l'élimination de la fragmentation externe."
+            },
+            {
+                "id": 43,
+                "topic": "memory_allocation",
+                "front": "Quel est l'avantage de l'algorithme first-fit sur best-fit ?",
+                "back": "Il est plus rapide, car il s'arrête au premier bloc suffisant."
+            },
+            {
+                "id": 44,
+                "topic": "protection_sharing",
+                "front": "Comment un bit de protection empêche-t-il l'écriture dans la pagination ?",
+                "back": "Il marque une page comme lecture seule dans la table de pages."
+            },
+            {
+                "id": 45,
+                "topic": "swapping",
+                "front": "Quel est l'inconvénient principal de la permutation ?",
+                "back": "Temps élevé pour les changements de contexte dû à la copie de mémoire."
+            },
+            {
+                "id": 46,
+                "topic": "partitions",
+                "front": "Comment une file globale améliore-t-elle l'allocation dans les partitions fixes ?",
+                "back": "Elle permet une allocation flexible, comme best-fit, à toutes les partitions."
+            },
+            {
+                "id": 47,
+                "topic": "paging",
+                "front": "Quel est l'effet d'une taille de page plus grande ?",
+                "back": "Augmentation de la fragmentation interne, car plus d'espace est inutilisé."
+            },
+            {
+                "id": 48,
+                "topic": "segmentation",
+                "front": "Quel est l'inconvénient principal de la segmentation ?",
+                "back": "Retour de la fragmentation externe, contrairement à la pagination."
+            },
+            {
+                "id": 49,
+                "topic": "combined_systems",
+                "front": "Pourquoi les tables à plusieurs niveaux augmentent-elles le temps d'accès ?",
+                "back": "Elles nécessitent plusieurs accès mémoire pour traduire une adresse."
+            },
+            {
+                "id": 50,
+                "topic": "memory_allocation",
+                "front": "Quel algorithme est le plus rapide pour l'allocation dans les partitions variables ?",
+                "back": "First-fit, car il alloue le premier bloc libre suffisamment grand."
+            }
+        ]
+    },
     "pratique": {
         "name": "Pratique",
         "description": "Pratiques des divers chapitre",
